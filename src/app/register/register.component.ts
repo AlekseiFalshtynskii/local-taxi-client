@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../auth/auth.service';
-import { SignUpInfo } from '../auth/signup-info';
+import { SignUpInfo } from '../model/signup-info';
 
 @Component({
   selector: 'app-register',
@@ -34,10 +34,13 @@ export class RegisterComponent implements OnInit {
     console.log(this.form);
 
     this.signupInfo = new SignUpInfo(
-      this.form.name,
       this.form.username,
+      this.form.password,
       this.form.email,
-      this.form.password
+      this.form.firstName,
+      this.form.lastName,
+      this.form.middleName,
+      this.form.car
     );
 
     this.authService.signUp(this.signupInfo).subscribe(
