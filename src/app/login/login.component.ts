@@ -13,8 +13,6 @@ import { StorageService } from '../service/storage.service';
 })
 export class LoginComponent implements OnInit {
   authForm: FormGroup;
-  isLoggedIn = false;
-  isLoginFailed = false;
   errorMessage = '';
 
   constructor(private fb: FormBuilder,
@@ -29,10 +27,6 @@ export class LoginComponent implements OnInit {
       username: this.fb.control(null, [Validators.required]),
       password: this.fb.control(null, [Validators.required])
     });
-
-    if (this.storageService.getToken()) {
-      this.isLoggedIn = true;
-    }
   }
 
   auth() {
@@ -40,19 +34,15 @@ export class LoginComponent implements OnInit {
 
     if (this.authForm.valid) {
       this.authService.signIn(this.authForm.value).subscribe(
-        data => {
-          console.log(data);
-          this.storageService.saveToken(data.accessToken);
-          this.storageService.saveUser(data.user);
-
-          this.isLoginFailed = false;
-          this.isLoggedIn = true;
+        response => {
+          console.log(response);
+          this.storageService.saveToken(response.accessToken);
+          this.storageService.saveUser(response.user);
           this.router.navigateByUrl('/lk').then();
         },
         error => {
           console.log(error);
           this.errorMessage = error.error.message;
-          this.isLoginFailed = true;
         }
       );
     }
