@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+.button-row button,
+.button-row a {
+  margin: 8px;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-container > * {
+  width: 100%;
+}
+
+mat-card {
+  margin-top: 5px;
+}
+
+button[mat-icon-button] {
+  margin-right: 20px;
+}
+
+.fab-button-right-bottom {
+  position: fixed;
+  display: flex;
+  bottom: 20px;
+  right: 20px;
+}

@@ -1,26 +1,21 @@
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Такси β</a>
-    </div>
-    <ul class="nav navbar-nav" routerLinkActive="active">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="line-from">В город</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="line-to">В поселок</a>
-      </li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li *ngIf="!authority" class="nav-item">
-        <a class="nav-link" routerLink="auth/login">Войти</a>
-      </li>
-      <li *ngIf="authority" class="nav-item">
-        <a class="nav-link" (click)="logout()">Выйти</a>
-      </li>
-    </ul>
+<mat-toolbar>
+  <button mat-icon-button color="primary" routerLink="queue/v/f">
+    <mat-icon>home</mat-icon>
+  </button>
+  <button mat-icon-button color="primary" routerLink="queue/f/v">
+    <mat-icon>location_city</mat-icon>
+  </button>
+  <button mat-icon-button color="primary" routerLink="auth/signin" *ngIf="!storageService.getToken()">
+    <mat-icon>input</mat-icon>
+  </button>
+  <button mat-icon-button color="primary" routerLink="lk" *ngIf="storageService.getToken()">
+    <mat-icon>person</mat-icon>
+  </button>
+  <div style="display: flex; position: absolute; right: 16px;" routerLink="lk" *ngIf="storageService.getToken()">
+    <button mat-icon-button color="primary" (click)="logout()">
+      <mat-icon>power_settings_new</mat-icon>
+    </button>
   </div>
-</nav>
-<div class="container">
-  <router-outlet></router-outlet>
-</div>
+</mat-toolbar>
+
+<router-outlet></router-outlet>

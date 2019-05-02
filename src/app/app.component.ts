@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TokenStorageService } from './auth/token-storage.service';
+import { Router } from '@angular/router';
+
+import { StorageService } from './service/storage.service';
 
 @Component({
   selector: 'app-root',
@@ -7,30 +9,19 @@ import { TokenStorageService } from './auth/token-storage.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  private roles: string[];
-  private authority: string;
 
-  constructor(private token: TokenStorageService) {
+  private authorized: boolean;
+
+  constructor(private router: Router,
+              public storageService: StorageService) {
   }
 
   ngOnInit() {
-    if (this.token.getToken()) {
-      this.roles = this.token.getAuthorities();
-      this.roles.every(role => {
-        if (role === 'ROLE_DRIVER') {
-          this.authority = 'driver';
-        } else if (role === 'ROLE_PASSENGER') {
-          this.authority = 'passenger';
-        } else {
-          return false;
-        }
-        return true;
-      });
-    }
+    this.authorized = !!this.storageService.getToken();
   }
 
   logout() {
-    this.token.signOut();
-    window.location.reload();
+    this.storageService.signOut();
+    this.router.navigateByUrl('/auth/signin').then();
   }
 }

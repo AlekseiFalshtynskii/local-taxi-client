@@ -1,30 +1,48 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatSelectModule, MatTabsModule, MatToolbarModule
+} from '@angular/material';
+
+import { HttpInterceptorProviders } from './interceptor/auth-interceptor';
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
+import { LKComponent } from './lk/lk.component';
 import { LoginComponent } from './login/login.component';
+import { QueueComponent } from './queue/queue.component';
 import { RegisterComponent } from './register/register.component';
-import { HomeComponent } from './home/home.component';
-
-import { httpInterceptorProviders } from './auth/auth-interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    LKComponent,
+    QueueComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
-    AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTabsModule,
+    MatToolbarModule,
+    ReactiveFormsModule,
+    AppRoutingModule
   ],
-  providers: [httpInterceptorProviders],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ],
+  providers: [HttpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule {

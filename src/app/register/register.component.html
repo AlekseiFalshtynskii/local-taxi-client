@@ -1,95 +1,121 @@
-<div *ngIf="isSignedUp; else signupForm">
-  Вы успешно зарегистрированы! Пожалуйста, авторизуйтесь!
-</div>
-
-<ng-template #signupForm>
-  <div class="row col-sm-6" style="max-width:350px;">
-    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-      <div class="form-group">
-        <label for="username">Логин</label>
-        <input id="username" type="text" class="form-control" name="username" [(ngModel)]="form.username"
-               #username="ngModel"
-               required/>
-        <div *ngIf="f.submitted && username.invalid">
-          <div *ngIf="username.errors.required">Введите логин</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="password">Пароль</label>
-        <input id="password" type="password" class="form-control" name="password" [(ngModel)]="form.password"
-               #password="ngModel"
-               required minlength="6"/>
-        <div *ngIf="f.submitted && password.invalid">
-          <div *ngIf="password.errors.required">Введите пароль</div>
-          <div *ngIf="password.errors.minlength">Пароль должен содержать не менее 6 символов</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="text" class="form-control" name="email" [(ngModel)]="form.email" #email="ngModel"
-               required email/>
-        <div *ngIf="f.submitted && email.invalid">
-          <div *ngIf="email.errors.required">Введите Email</div>
-          <div *ngIf="email.errors.email">Email некорректен</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="firstName">Ваше имя</label>
-        <input id="firstName" type="text" class="form-control" name="firstName" [(ngModel)]="form.firstName"
-               #firstName="ngModel" required/>
-        <div *ngIf="f.submitted && firstName.invalid">
-          <div *ngIf="firstName.errors.required">Введите Ваше имя</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="lastName">Ваша фамилия (необязательно)</label>
-        <input id="lastName" type="text" class="form-control" name="lastName" [(ngModel)]="form.lastName"
-               #lastName="ngModel"/>
-      </div>
-      <div class="form-group">
-        <label for="middleName">Ваше отчество (необязательно)</label>
-        <input id="middleName" type="text" class="form-control" name="middleName" [(ngModel)]="form.middleName"
-               #middleName="ngModel"/>
-      </div>
-      <div class="form-group">
-        <label for="role">Кто Вы?</label>
-        <select id="role" class="form-control" name="role" [(ngModel)]="form.role" #name="ngModel">
-          <option *ngFor="let role of roles" [ngValue]="role.role">{{ role.label }}</option>
-        </select>
-      </div>
-      <div *ngIf="form.role === 'driver'">
-        <hr/>
-        <div class="form-group">
-          <label for="model">Модель Вашего автомобиля</label>
-          <input id="model" type="text" class="form-control" name="model" [(ngModel)]="form.car.model" #model="ngModel"
-                 required/>
-          <div *ngIf="f.submitted && model.invalid">
-            <div *ngIf="model.errors.required">Введите модель Вашего автомобиля</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="regNumber">Регистрационный номер</label>
-          <input id="regNumber" type="text" class="form-control" name="model" [(ngModel)]="form.car.regNumber"
-                 #regNumber="ngModel" required/>
-          <div *ngIf="f.submitted && regNumber.invalid">
-            <div *ngIf="regNumber.errors.required">Введите регистрационный номер Вашего автомобиля</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="color">Цвет</label>
-          <input id="color" type="text" class="form-control" name="model" [(ngModel)]="form.car.color" #color="ngModel"
-                 required/>
-          <div *ngIf="f.submitted && color.invalid">
-            <div *ngIf="color.errors.required">Введите цвет Вашего автомобиля</div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <button class="btn btn-primary">Зарегистрировать</button>
-        <div *ngIf="f.submitted && isSignUpFailed" class="alert alert-warning">
-          Ошибка регистрации!<br/>{{errorMessage}}
-        </div>
-      </div>
-    </form>
+<form *ngIf="signupForm" [formGroup]="signupForm">
+  <div class="field-container">
+    <mat-form-field>
+      <input matInput placeholder="Логин" formControlName="username" required>
+      <mat-error *ngIf="signupForm.controls['username'].hasError('required')">
+        Не заполнено
+      </mat-error>
+      <button mat-button *ngIf="signupForm.value.username" matSuffix mat-icon-button aria-label="Clear" (click)="signupForm.controls['username'].reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
   </div>
-</ng-template>
+  <div class="field-container">
+    <mat-form-field>
+      <input matInput type="password" placeholder="Пароль" formControlName="password" required>
+      <button mat-button *ngIf="signupForm.value.password" matSuffix mat-icon-button aria-label="Clear" (click)="signupForm.controls['password'].reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="signupForm.controls['password'].hasError('required')">
+        Не заполнено
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="field-container">
+    <mat-form-field>
+      <input matInput type="email" placeholder="Email" formControlName="email" required>
+      <button mat-button *ngIf="signupForm.value.email" matSuffix mat-icon-button aria-label="Clear" (click)="signupForm.controls['email'].reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="signupForm.controls['email'].hasError('required')">
+        Не заполнено
+      </mat-error>
+      <mat-error *ngIf="signupForm.controls['email'].hasError('email')">
+        Email некорректен
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="field-container">
+    <mat-form-field>
+      <input matInput placeholder="Ваше имя" formControlName="firstName" required>
+      <button mat-button *ngIf="signupForm.value.firstName" matSuffix mat-icon-button aria-label="Clear" (click)="signupForm.controls['firstName'].reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="signupForm.controls['firstName'].hasError('required')">
+        Не заполнено
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="field-container">
+    <mat-form-field>
+      <input matInput placeholder="Ваша фамилия" formControlName="lastName">
+      <button mat-button *ngIf="signupForm.value.lastName" matSuffix mat-icon-button aria-label="Clear" (click)="signupForm.controls['lastName'].reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <div class="field-container">
+    <mat-form-field>
+      <input matInput placeholder="Ваше отчество" formControlName="middleName">
+      <button mat-button *ngIf="signupForm.value.middleName" matSuffix mat-icon-button aria-label="Clear" (click)="signupForm.controls['middleName'].reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-select placeholder="Кто Вы?" [formControl]="signupForm.controls['role']" required (valueChange)="changeRole($event)">
+        <mat-option *ngFor="let role of roles" [value]="role.value">
+          {{role.label}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="signupForm.controls['role'].hasError('required')">
+        Не заполнено
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <form *ngIf="signupForm.value.role === 'driver'" formGroupName="car">
+    <div class="field-container">
+      <mat-form-field>
+        <input matInput placeholder="Модель Вашего автомобиля" formControlName="model" required>
+        <button mat-button *ngIf="carForm.value.model" matSuffix mat-icon-button aria-label="Clear" (click)="carForm.controls['model'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="carForm.controls['model'].hasError('required')">
+          Не заполнено
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="field-container">
+      <mat-form-field>
+        <input matInput placeholder="Номер Вашего автомобиля" formControlName="regNumber" required>
+        <button mat-button *ngIf="carForm.value.regNumber" matSuffix mat-icon-button aria-label="Clear" (click)="carForm.controls['regNumber'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="carForm.controls['regNumber'].hasError('required')">
+          Не заполнено
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="field-container">
+      <mat-form-field>
+        <input matInput placeholder="Цвет Вашего автомобиля" formControlName="color" required>
+        <button mat-button *ngIf="carForm.value.color" matSuffix mat-icon-button aria-label="Clear" (click)="carForm.controls['color'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="carForm.controls['color'].hasError('required')">
+          Не заполнено
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <div class="button-row">
+    <button mat-raised-button color="primary" (click)="register()">
+      Зарегистрировать
+    </button>
+    <button mat-raised-button color="primary" (click)="cancel()">
+      Отменить
+    </button>
+  </div>
+</form>

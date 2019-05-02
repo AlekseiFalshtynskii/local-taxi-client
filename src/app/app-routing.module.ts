@@ -3,24 +3,33 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
+import { LKComponent } from './lk/lk.component';
+import { QueueComponent } from './queue/queue.component';
 
 const routes: Routes = [
   {
-    path: 'home',
-    component: HomeComponent
+    path: 'lk',
+    component: LKComponent
   },
   {
-    path: 'auth/login',
+    path: 'auth/signin',
     component: LoginComponent
   },
   {
-    path: 'signup',
+    path: 'auth/signup',
     component: RegisterComponent
   },
   {
+    path: 'queue/f/v',
+    component: QueueComponent
+  },
+  {
+    path: 'queue/v/f',
+    component: QueueComponent
+  },
+  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'queue/f/v',
     pathMatch: 'full'
   }
 ];
