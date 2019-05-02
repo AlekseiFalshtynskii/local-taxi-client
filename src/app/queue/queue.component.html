@@ -1,0 +1,45 @@
+<div *ngIf="queue;else empty">
+  <mat-card *ngFor="let piq of queue">
+
+    <mat-card-header>
+      <mat-card-title>{{piq.number}}</mat-card-title>
+      <mat-card-subtitle>{{fio(piq)}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="piq.driver.car">{{car(piq)}}</div>
+      <div>{{passengers(piq)}}</div>
+    </mat-card-content>
+
+    <mat-card-actions *ngIf="storageService.isPassenger()">
+      <button mat-button color="accent" *ngIf="passengerFree(piq)" (click)="addPassengerInQueue(piq)">Сесть</button>
+      <button mat-button color="accent" *ngIf="passengerInPiq(piq)" (click)="removePassengerFromQueue(piq)">Покинуть</button>
+    </mat-card-actions>
+
+    <mat-card-actions *ngIf="driverInPiq(piq)">
+      <button mat-button color="accent" [disabled]="piq.numberPassengers === 4" (click)="addPassengerInQueue(piq)">+ пассажир</button>
+      <button mat-button color="accent" [disabled]="piq.numberPassengers === 0" (click)="removePassengerFromQueue(piq)">- пассажир</button>
+      <br/>
+      <button mat-button color="accent" (click)="removeDriverFromQueue()">Покинуть очередь</button>
+    </mat-card-actions>
+
+  </mat-card>
+</div>
+
+<mat-card *ngIf="queue && !queue.length">
+  <mat-card-content>
+    Водители отсутствуют
+  </mat-card-content>
+</mat-card>
+
+<div *ngIf="showBtnAddDriverInQueue()" class="fab-button-right-bottom">
+  <button color="primary" mat-fab (click)="addDriverInQueue()">
+    <mat-icon>person_add</mat-icon>
+  </button>
+</div>
+
+<div *ngIf="showBtnRemoveDriverFromQueue()" class="fab-button-right-bottom">
+  <button color="primary" mat-fab (click)="removeDriverFromQueue()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>

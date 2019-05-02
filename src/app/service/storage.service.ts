@@ -10,11 +10,14 @@ const USER_KEY = 'AuthUser';
 })
 export class StorageService {
 
+  private user: User;
+
   constructor() {
   }
 
   signOut() {
     window.localStorage.clear();
+    this.user = undefined;
   }
 
   public saveToken(token: string) {
@@ -29,21 +32,27 @@ export class StorageService {
   public saveUser(user: User) {
     window.localStorage.removeItem(USER_KEY);
     window.localStorage.setItem(USER_KEY, JSON.stringify(user));
+    this.user = user;
   }
 
   public getUser(): User {
-    return Object.assign(new User(), JSON.parse(localStorage.getItem(USER_KEY)));
+    if (!this.user) {
+      this.user = Object.assign(new User(), JSON.parse(localStorage.getItem(USER_KEY)));
+    }
+    return this.user;
   }
 
   public isDriver(): boolean {
-    return !!this.getUser().roles.find(role => {
-      return role.name === 'driver';
+    const user = this.getUser();
+    return user.id && !!user.roles.find(role => {
+      return role.name === 'ROLE_DRIVER';
     });
   }
 
   public isPassenger(): boolean {
-    return !!this.getUser().roles.find(role => {
-      return role.name === 'passenger';
+    const user = this.getUser();
+    return user.id && !!user.roles.find(role => {
+      return role.name === 'ROLE_PASSENGER';
     });
   }
 }
