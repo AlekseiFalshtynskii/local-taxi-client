@@ -1,12 +1,200 @@
-<div *ngIf="info.token; else loggedOut">
-  <h5 class="text-primary">Your Information</h5>
-  <p>
-    <strong>User:</strong> {{info.user}}<br/>
-    <strong>Token:</strong> {{info.token}}.
-  </p>
-  <button class="btn btn-secondary" (click)="logout()">Logout</button>
-</div>
+<mat-card>
+  <mat-card-content>
+    <form *ngIf="usernameForm" [formGroup]="usernameForm">
+      <mat-form-field>
+        <input matInput placeholder="Логин" formControlName="username" required>
+        <mat-error *ngIf="usernameForm.controls['username'].hasError('required')">
+          Не заполнено
+        </mat-error>
+        <button *ngIf="usernameForm.enabled && usernameForm.value.username"
+                mat-button matSuffix mat-icon-button aria-label="Clear"
+                (click)="usernameForm.controls['username'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-icon-button *ngIf="usernameForm.disabled" (click)="usernameForm.enable()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="usernameForm.enabled" (click)="saveLogin()">
+        <mat-icon>save</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="usernameForm.enabled" (click)="usernameFormDisable()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
 
-<ng-template #loggedOut>
-  Please login.
-</ng-template>
+<mat-card>
+  <mat-card-content>
+    <form *ngIf="passwordForm" [formGroup]="passwordForm">
+      <mat-form-field>
+        <input matInput type="password" placeholder="Пароль" formControlName="oldPassword" required>
+        <button *ngIf="passwordForm.enabled && passwordForm.value.oldPassword"
+                mat-button matSuffix mat-icon-button aria-label="Clear"
+                (click)="passwordForm.controls['oldPassword'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="passwordForm.controls['oldPassword'].hasError('required')">
+          Не заполнено
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="passwordForm.enabled">
+        <input matInput type="password" placeholder="Новый пароль" formControlName="newPassword" required>
+        <button mat-button *ngIf="passwordForm.value.newPassword" matSuffix mat-icon-button aria-label="Clear"
+                (click)="passwordForm.controls['newPassword'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="passwordForm.controls['newPassword'].hasError('required')">
+          Не заполнено
+        </mat-error>
+      </mat-form-field>
+      <button mat-icon-button *ngIf="passwordForm.disabled" (click)="passwordForm.enable()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="passwordForm.enabled" (click)="savePassword()">
+        <mat-icon>save</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="passwordForm.enabled" (click)="passwordFormDisable()">
+        <mat-icon>close</mat-icon>
+      </button>
+
+      <mat-form-field *ngIf="passwordForm.enabled">
+        <input matInput type="password" placeholder="Новый пароль повторно" formControlName="newPasswordR" required>
+        <button mat-button *ngIf="passwordForm.value.newPasswordR" matSuffix mat-icon-button aria-label="Clear"
+                (click)="passwordForm.controls['newPasswordR'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="passwordForm.controls['newPasswordR'].hasError('required')">
+          Не заполнено
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <form *ngIf="emailForm" [formGroup]="emailForm">
+      <mat-form-field>
+        <input matInput placeholder="Email" formControlName="email" required>
+        <mat-error *ngIf="emailForm.controls['email'].hasError('required')">
+          Не заполнено
+        </mat-error>
+        <button *ngIf="emailForm.enabled && emailForm.value.email"
+                mat-button matSuffix mat-icon-button aria-label="Clear"
+                (click)="emailForm.controls['email'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-icon-button *ngIf="emailForm.disabled" (click)="emailForm.enable()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="emailForm.enabled" (click)="saveEmail()">
+        <mat-icon>save</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="emailForm.enabled" (click)="emailFormDisable()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <form *ngIf="fioForm" [formGroup]="fioForm">
+      <mat-form-field>
+        <input matInput placeholder="Ваше имя" formControlName="firstName" required>
+        <mat-error *ngIf="fioForm.controls['firstName'].hasError('required')">
+          Не заполнено
+        </mat-error>
+        <button *ngIf="fioForm.controls['firstName'].enabled && fioForm.value.firstName"
+                mat-button matSuffix mat-icon-button aria-label="Clear"
+                (click)="fioForm.controls['firstName'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Ваша фамилия" formControlName="lastName">
+        <button *ngIf="fioForm.enabled && fioForm.value.lastName"
+                mat-button matSuffix mat-icon-button aria-label="Clear"
+                (click)="fioForm.controls['lastName'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-icon-button *ngIf="fioForm.disabled" (click)="fioForm.enable()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="fioForm.enabled" (click)="saveFIO()">
+        <mat-icon>save</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="fioForm.enabled" (click)="fioFormDisable()">
+        <mat-icon>close</mat-icon>
+      </button>
+
+      <mat-form-field>
+        <input matInput placeholder="Ваше отчество" formControlName="middleName">
+        <button *ngIf="fioForm.enabled && fioForm.value.middleName"
+                mat-button matSuffix mat-icon-button aria-label="Clear"
+                (click)="fioForm.controls['middleName'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="storageService.isDriver()">
+  <mat-card-content>
+    <form *ngIf="carForm" [formGroup]="carForm">
+      <mat-form-field>
+        <input matInput placeholder="Модель Вашего автомобиля" formControlName="model" required>
+        <button mat-button *ngIf="carForm.enabled && carForm.value.model" matSuffix mat-icon-button aria-label="Clear"
+                (click)="carForm.controls['model'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="carForm.controls['model'].hasError('required')">
+          Не заполнено
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Номер Вашего автомобиля" formControlName="regNumber" required>
+        <button mat-button *ngIf="carForm.enabled && carForm.value.regNumber" matSuffix mat-icon-button
+                aria-label="Clear"
+                (click)="carForm.controls['regNumber'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="carForm.controls['regNumber'].hasError('required')">
+          Не заполнено
+        </mat-error>
+      </mat-form-field>
+      <button mat-icon-button *ngIf="carForm.disabled" (click)="carForm.enable()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="carForm.enabled" (click)="saveCar()">
+        <mat-icon>save</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="carForm.enabled" (click)="carFormDisable()">
+        <mat-icon>close</mat-icon>
+      </button>
+
+      <mat-form-field>
+        <input matInput placeholder="Цвет Вашего автомобиля" formControlName="color" required>
+        <button mat-button *ngIf="carForm.enabled && carForm.value.color" matSuffix mat-icon-button aria-label="Clear"
+                (click)="carForm.controls['color'].reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="carForm.controls['color'].hasError('required')">
+          Не заполнено
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<button mat-raised-button color="accent" (click)="deleteUser()">
+  Удалить
+</button>

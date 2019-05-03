@@ -1,3 +1,9 @@
+<mat-card>
+  <mat-card-title>
+    {{pageQueueFV() ? "В город" : "В поселок"}}
+  </mat-card-title>
+</mat-card>
+
 <div *ngIf="queue;else empty">
   <mat-card *ngFor="let piq of queue">
 

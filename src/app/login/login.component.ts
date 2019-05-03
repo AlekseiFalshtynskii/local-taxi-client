@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../service/auth.service';
@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
           console.log(response);
           this.storageService.saveToken(response.accessToken);
           this.storageService.saveUser(response.user);
-          this.router.navigateByUrl('/lk').then();
+          this.router.navigateByUrl('/queue/v/f').then();
         },
         error => {
           console.log(error);
