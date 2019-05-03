@@ -5,14 +5,15 @@
   <button mat-icon-button color="primary" routerLink="queue/f/v">
     <mat-icon>location_city</mat-icon>
   </button>
-  <button mat-icon-button color="primary" routerLink="auth/signin" *ngIf="!storageService.getToken()">
-    <mat-icon>input</mat-icon>
-  </button>
   <button mat-icon-button color="primary" routerLink="lk" *ngIf="storageService.getToken()">
     <mat-icon>person</mat-icon>
   </button>
-  <div style="display: flex; position: absolute; right: 16px;" routerLink="lk" *ngIf="storageService.getToken()">
-    <button mat-icon-button color="primary" (click)="logout()">
+
+  <div class="login-logout-btn">
+    <button mat-icon-button *ngIf="!storageService.getToken()" color="primary" routerLink="auth/signin">
+      <mat-icon>input</mat-icon>
+    </button>
+    <button mat-icon-button *ngIf="storageService.getToken()" color="primary" (click)="logout()">
       <mat-icon>power_settings_new</mat-icon>
     </button>
   </div>
