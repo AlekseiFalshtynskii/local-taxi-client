@@ -21,7 +21,7 @@ export class QueueService {
   }
 
   public getCurrentPlaceInQueueFV(): Observable<PlaceInQueue> {
-    return this.http.get<PlaceInQueue>(api.QUEUE_FV_CURRENT_PATHQUEUE_FV_CURRENT_PATH);
+    return this.http.get<PlaceInQueue>(api.QUEUE_FV_CURRENT_PATH);
   }
 
   public getCurrentPlaceInQueueVF(): Observable<PlaceInQueue> {
