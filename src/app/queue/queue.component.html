@@ -4,7 +4,7 @@
   </mat-card-title>
 </mat-card>
 
-<div *ngIf="queue;else empty">
+<div *ngIf="queue">
   <mat-card *ngFor="let piq of queue">
 
     <mat-card-header>
@@ -38,6 +38,8 @@
 
     <mat-card-actions *ngIf="driverInPiq(piq)">
       <button mat-button color="accent" [disabled]="piq.numberPassengers === 4" (click)="addPassengerInQueue(piq)">+ пассажир</button>
+      <br/>
+      <button mat-button color="accent" (click)="startTrip()">Начать поездку</button>
       <br/>
       <button mat-button color="accent" (click)="removeDriverFromQueue()">Покинуть очередь</button>
     </mat-card-actions>

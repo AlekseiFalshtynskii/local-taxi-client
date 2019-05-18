@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -15,6 +16,7 @@ import { LKComponent } from './lk/lk.component';
 import { LoginComponent } from './login/login.component';
 import { QueueComponent } from './queue/queue.component';
 import { RegisterComponent } from './register/register.component';
+import { TripComponent } from './trip/trip.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { RegisterComponent } from './register/register.component';
     LoginComponent,
     RegisterComponent,
     LKComponent,
-    QueueComponent
+    QueueComponent,
+    TripComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -42,7 +45,7 @@ import { RegisterComponent } from './register/register.component';
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  providers: [HttpInterceptorProviders],
+  providers: [HttpInterceptorProviders, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

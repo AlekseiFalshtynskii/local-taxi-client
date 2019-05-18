@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { PlaceInQueue } from '../model/place-in-queue';
 import { QueueService } from '../service/queue.service';
 import { StorageService } from '../service/storage.service';
+import { TripService } from '../service/trip.service';
 import { Car } from '../model/car';
 import { User } from '../model/user';
 
@@ -24,8 +25,11 @@ export class QueueComponent implements OnInit {
 
   passengerInQueueVF: boolean;
 
+  userInTrip: boolean;
+
   constructor(private router: Router,
               private queueService: QueueService,
+              private tripService: TripService,
               public storageService: StorageService) {
   }
 
@@ -91,6 +95,15 @@ export class QueueComponent implements OnInit {
         }
       );
     }
+    this.tripService.getTripActive().subscribe(
+      response => {
+        console.log(response);
+        this.userInTrip = !!response;
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   pageQueueFV() {
@@ -112,7 +125,7 @@ export class QueueComponent implements OnInit {
   }
 
   passengerFree(): boolean {
-    return !this.passengerInQueueFV && !this.passengerInQueueVF;
+    return !this.passengerInQueueFV && !this.passengerInQueueVF && !this.userInTrip;
   }
 
   fio(user: User): string {
@@ -142,7 +155,7 @@ export class QueueComponent implements OnInit {
   }
 
   showBtnAddDriverInQueue(): boolean {
-    return this.storageService.isDriver() && this.queue && !this.driverInQueueFV && !this.driverInQueueVF;
+    return this.storageService.isDriver() && this.queue && !this.driverInQueueFV && !this.driverInQueueVF && !this.userInTrip;
   }
 
   showBtnRemoveDriverFromQueue(): boolean {
@@ -251,5 +264,17 @@ export class QueueComponent implements OnInit {
         }
       );
     }
+  }
+
+  startTrip() {
+    this.tripService.startTrip().subscribe(
+      response => {
+        console.log(response);
+        this.router.navigateByUrl('trips').then();
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 }

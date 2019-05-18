@@ -5,6 +5,7 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { LKComponent } from './lk/lk.component';
 import { QueueComponent } from './queue/queue.component';
+import { TripComponent } from './trip/trip.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'queue/v/f',
     component: QueueComponent
+  },
+  {
+    path: 'trips',
+    component: TripComponent
   },
   {
     path: '',

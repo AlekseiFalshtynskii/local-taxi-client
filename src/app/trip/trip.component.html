@@ -1,0 +1,54 @@
+<div *ngIf="trip">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{trip.direction}}</mat-card-title>
+      <mat-card-title>{{time}}</mat-card-title>
+      <mat-card-subtitle>{{trip.number}} {{fio(trip.driver)}}</mat-card-subtitle>
+      <mat-card-subtitle>{{car(trip.driver.car)}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngFor="let passenger of trip.passengers">
+        {{fio(passenger)}}
+      </div>
+      <div *ngFor="let n of numberAnonymous(trip)">
+        Аноним
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions *ngIf="storageService.isDriver() && !trip.endDT">
+      <button mat-button color="accent" (click)="finishTrip()">Завершить поездку</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<div *ngIf="trips">
+  <mat-card>
+    <mat-card-title>Завершенные</mat-card-title>
+  </mat-card>
+
+  <mat-card *ngFor="let t of trips; let i = index">
+    <mat-card-header>
+      <mat-card-title>{{trips.length - i}} {{t.direction}}</mat-card-title>
+      <mat-card-title>{{t.startDT | date:'dd.MM.yyyy HH:mm:ss'}}</mat-card-title>
+      <mat-card-subtitle>Время поездки: {{duration(t)}}</mat-card-subtitle>
+      <mat-card-subtitle>{{t.number}} {{fio(t.driver)}}</mat-card-subtitle>
+      <mat-card-subtitle>{{car(t.driver.car)}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngFor="let passenger of t.passengers">
+        {{fio(passenger)}}
+      </div>
+      <div *ngFor="let n of numberAnonymous(t)">
+        Аноним
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<mat-card *ngIf="!trip && !trips">
+  <mat-card-content>
+    Здесь будет информация о Вашей поездке
+  </mat-card-content>
+</mat-card>
