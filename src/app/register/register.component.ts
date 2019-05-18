@@ -4,9 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../service/auth.service';
-import { AuthLoginInfo } from '../model/login-info';
-import { SignUpInfo } from '../model/signup-info';
+import { UserService } from '../service/user.service';
 import { StorageService } from '../service/storage.service';
+import { SignUpInfo } from '../model/signup-info';
 
 @Component({
   selector: 'app-register',
@@ -23,13 +23,13 @@ export class RegisterComponent implements OnInit {
 
   errorMessage = '';
 
-  roles = [
+  authorities = [
     {
-      value: 'driver',
+      value: 'AUTHORITY_DRIVER',
       label: 'Водитель'
     },
     {
-      value: 'passenger',
+      value: 'AUTHORITY_PASSENGER',
       label: 'Пассажир'
     }
   ];
@@ -38,6 +38,7 @@ export class RegisterComponent implements OnInit {
               private location: Location,
               private router: Router,
               private authService: AuthService,
+              private userService: UserService,
               private storageService: StorageService) {
   }
 
@@ -54,14 +55,13 @@ export class RegisterComponent implements OnInit {
       firstName: this.fb.control(null, [Validators.required]),
       lastName: this.fb.control(null),
       middleName: this.fb.control(null),
-      role: this.fb.control(null, [Validators.required]),
+      authority: this.fb.control(null, [Validators.required]),
       car: this.carForm
     });
   }
 
-  changeRole(role: string) {
-    console.log(role);
-    if (role === 'driver') {
+  changeAuthority(authority: string) {
+    if (authority === 'AUTHORITY_DRIVER') {
       this.setValidators(this.carForm);
     } else {
       this.carForm.reset();
@@ -87,14 +87,13 @@ export class RegisterComponent implements OnInit {
 
   register() {
     console.log(JSON.stringify(this.signupForm.value));
-    console.log(JSON.stringify(this.signupForm.value.role));
 
-    if (this.signupForm.valid || (this.signupForm.value.role === 'driver' && this.signupForm.valid && this.carForm.valid)) {
+    if (this.signupForm.valid || (this.signupForm.value.authority === 'driver' && this.signupForm.valid && this.carForm.valid)) {
       this.signupInfo = new SignUpInfo(
         this.signupForm.value.username,
         this.signupForm.value.password,
         this.signupForm.value.email,
-        this.signupForm.value.role,
+        this.signupForm.value.authority,
         this.signupForm.value.firstName,
         this.signupForm.value.lastName,
         this.signupForm.value.middleName,
@@ -104,12 +103,20 @@ export class RegisterComponent implements OnInit {
       this.authService.signUp(this.signupInfo).subscribe(
         response => {
           console.log(response);
-          this.authService.signIn(new AuthLoginInfo(this.signupForm.value.username, this.signupForm.value.password)).subscribe(
+          this.authService.signIn(this.signupForm.value.username, this.signupForm.value.password).subscribe(
             response1 => {
               console.log(response1);
-              this.storageService.saveToken(response1.accessToken);
-              this.storageService.saveUser(response1.user);
-              this.router.navigateByUrl('/lk').then();
+              this.storageService.saveToken(response1);
+              this.userService.getUser().subscribe(
+                response2 => {
+                  console.log(response2);
+                  this.storageService.saveUser(response2);
+                  this.router.navigateByUrl('/queue/v/f').then();
+                },
+                error => {
+                  console.log(error);
+                }
+              );
             },
             error => {
               console.log(error);

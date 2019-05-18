@@ -64,17 +64,17 @@
   </div>
   <div>
     <mat-form-field>
-      <mat-select placeholder="Кто Вы?" [formControl]="signupForm.controls['role']" required (valueChange)="changeRole($event)">
-        <mat-option *ngFor="let role of roles" [value]="role.value">
-          {{role.label}}
+      <mat-select placeholder="Кто Вы?" [formControl]="signupForm.controls['authority']" required (valueChange)="changeAuthority($event)">
+        <mat-option *ngFor="let authority of authorities" [value]="authority.value">
+          {{authority.label}}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="signupForm.controls['role'].hasError('required')">
+      <mat-error *ngIf="signupForm.controls['authority'].hasError('required')">
         Не заполнено
       </mat-error>
     </mat-form-field>
   </div>
-  <form *ngIf="signupForm.value.role === 'driver'" formGroupName="car">
+  <form *ngIf="signupForm.value.authority === 'AUTHORITY_DRIVER'" formGroupName="car">
     <div class="field-container">
       <mat-form-field>
         <input matInput placeholder="Модель Вашего автомобиля" formControlName="model" required>

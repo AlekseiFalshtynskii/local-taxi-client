@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../service/auth.service';
 import { StorageService } from '../service/storage.service';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
               private location: Location,
               private router: Router,
               private authService: AuthService,
+              private userService: UserService,
               private storageService: StorageService) {
   }
 
@@ -30,15 +32,21 @@ export class LoginComponent implements OnInit {
   }
 
   auth() {
-    console.log(JSON.stringify(this.authForm.value));
-
     if (this.authForm.valid) {
-      this.authService.signIn(this.authForm.value).subscribe(
+      this.authService.signIn(this.authForm.value.username, this.authForm.value.password).subscribe(
         response => {
           console.log(response);
-          this.storageService.saveToken(response.accessToken);
-          this.storageService.saveUser(response.user);
-          this.router.navigateByUrl('/queue/v/f').then();
+          this.storageService.saveToken(response);
+          this.userService.getUser().subscribe(
+            response1 => {
+              console.log(response1);
+              this.storageService.saveUser(response1);
+              this.router.navigateByUrl('/queue/v/f').then();
+            },
+            error => {
+              console.log(error);
+            }
+          );
         },
         error => {
           console.log(error);

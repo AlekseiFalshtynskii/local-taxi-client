@@ -30,12 +30,12 @@ export class LKComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private router: Router,
               private carService: CarService,
-              public storageService: StorageService,
-              private userService: UserService) {
+              private userService: UserService,
+              public storageService: StorageService) {
   }
 
   ngOnInit() {
-    this.userService.getUser(this.storageService.getUser().id).subscribe(
+    this.userService.getUser().subscribe(
       response => {
         console.log(response);
         this.user = response;
@@ -114,12 +114,11 @@ export class LKComponent implements OnInit {
   }
 
   saveLogin() {
-    this.userService.saveUsername(this.user.id, this.usernameForm.get('username').value).subscribe(
+    this.userService.saveUsername(this.usernameForm.get('username').value).subscribe(
       response => {
         console.log(response);
-        this.storageService.saveToken(response.accessToken);
-        this.storageService.saveUser(response.user);
-        this.user = response.user;
+        this.user.username = this.usernameForm.get('username').value;
+        this.storageService.saveUser(this.user);
         this.usernameForm.disable();
       },
       error => {
@@ -129,11 +128,7 @@ export class LKComponent implements OnInit {
   }
 
   savePassword() {
-    this.userService.savePassword(
-      this.user.id,
-      this.passwordForm.get('oldPassword').value,
-      this.passwordForm.get('newPassword').value
-    ).subscribe(
+    this.userService.savePassword(this.passwordForm.get('oldPassword').value, this.passwordForm.get('newPassword').value).subscribe(
       response => {
         console.log(response);
         this.passwordForm.disable();
@@ -145,11 +140,11 @@ export class LKComponent implements OnInit {
   }
 
   saveEmail() {
-    this.userService.saveEmail(this.user.id, this.emailForm.get('email').value).subscribe(
+    this.userService.saveEmail(this.emailForm.get('email').value).subscribe(
       response => {
         console.log(response);
-        this.storageService.saveUser(response);
-        this.user = response;
+        this.user.email = this.emailForm.get('email').value;
+        this.storageService.saveUser(this.user);
         this.emailForm.disable();
       },
       error => {
@@ -162,11 +157,13 @@ export class LKComponent implements OnInit {
     const firstName = this.fioForm.get('firstName').value;
     const lastName = this.fioForm.get('lastName').value;
     const middleName = this.fioForm.get('middleName').value;
-    this.userService.saveFIO(this.user.id, firstName, lastName, middleName).subscribe(
+    this.userService.saveFIO(firstName, lastName, middleName).subscribe(
       response => {
         console.log(response);
-        this.storageService.saveUser(response);
-        this.user = response;
+        this.user.firstName = firstName;
+        this.user.lastName = lastName;
+        this.user.middleName = middleName;
+        this.storageService.saveUser(this.user);
         this.fioForm.disable();
       },
       error => {
@@ -194,7 +191,7 @@ export class LKComponent implements OnInit {
   }
 
   deleteUser() {
-    this.userService.deleteUser(this.user.id).subscribe(
+    this.userService.deleteUser().subscribe(
       response => {
         console.log(response);
         this.storageService.signOut();

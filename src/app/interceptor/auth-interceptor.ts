@@ -3,8 +3,6 @@ import { HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from '@a
 
 import { StorageService } from '../service/storage.service';
 
-const TOKEN_HEADER_KEY = 'Authorization';
-
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
@@ -12,12 +10,15 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    let authReq = req;
     const token = this.storageService.getToken();
     if (token != null) {
-      authReq = req.clone({headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token)});
+      req = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${this.storageService.getToken()}`
+        }
+      });
     }
-    return next.handle(authReq);
+    return next.handle(req);
   }
 }
 

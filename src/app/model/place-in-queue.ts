@@ -6,4 +6,7 @@ export class PlaceInQueue {
   driver: User;
   passengers: Array<User>;
   numberPassengers: number;
+  startDT: Date;
+  startFirstDT: Date;
+  endDT: Date;
 }

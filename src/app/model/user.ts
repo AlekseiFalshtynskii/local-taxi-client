@@ -1,11 +1,12 @@
 import { Car } from './car';
-import { Role } from './role';
+import { Authority } from './authority';
 
 export class User {
   id: number;
   username: string;
+  enabled: boolean;
+  authorities: Array<Authority>;
   email: string;
-  roles: Array<Role>;
   firstName: string;
   lastName?: string;
   middleName?: string;

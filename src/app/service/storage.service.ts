@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { User } from '../model/user';
+import { TokenResponse } from '../model/token-response';
 
-const TOKEN_KEY = 'AuthToken';
-const USER_KEY = 'AuthUser';
+const ACCESS_TOKEN = 'access_token';
+const REFRESH_TOKEN = 'refresh_token';
+const USER_KEY = 'user';
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +22,14 @@ export class StorageService {
     this.user = undefined;
   }
 
-  public saveToken(token: string) {
-    window.localStorage.removeItem(TOKEN_KEY);
-    window.localStorage.setItem(TOKEN_KEY, token);
+  public saveToken(token: TokenResponse) {
+    window.localStorage.clear();
+    window.localStorage.setItem(ACCESS_TOKEN, token.access_token);
+    window.localStorage.setItem(REFRESH_TOKEN, token.refresh_token);
   }
 
   public getToken(): string {
-    return localStorage.getItem(TOKEN_KEY);
+    return localStorage.getItem(ACCESS_TOKEN);
   }
 
   public saveUser(user: User) {
@@ -44,15 +47,15 @@ export class StorageService {
 
   public isDriver(): boolean {
     const user = this.getUser();
-    return user.id && !!user.roles.find(role => {
-      return role.name === 'ROLE_DRIVER';
+    return user.id && !!user.authorities.find(authority => {
+      return authority.authority === 'AUTHORITY_DRIVER';
     });
   }
 
   public isPassenger(): boolean {
     const user = this.getUser();
-    return user.id && !!user.roles.find(role => {
-      return role.name === 'ROLE_PASSENGER';
+    return user.id && !!user.authorities.find(authority => {
+      return authority.authority === 'AUTHORITY_PASSENGER';
     });
   }
 }

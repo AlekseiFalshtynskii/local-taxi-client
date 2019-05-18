@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { PlaceInQueue } from '../model/place-in-queue';
 import { QueueService } from '../service/queue.service';
 import { StorageService } from '../service/storage.service';
+import { Car } from '../model/car';
+import { User } from '../model/user';
 
 @Component({
   selector: 'app-queue',
@@ -29,7 +31,7 @@ export class QueueComponent implements OnInit {
 
   ngOnInit() {
     if (this.pageQueueFV()) {
-      this.queueService.getAllPlaceInQueueFV().subscribe(
+      this.queueService.getAllPlaceInQueueFVActive().subscribe(
         response => {
           console.log(response);
           this.queue = response;
@@ -39,7 +41,7 @@ export class QueueComponent implements OnInit {
         }
       );
     } else {
-      this.queueService.getAllPlaceInQueueVF().subscribe(
+      this.queueService.getAllPlaceInQueueVFActive().subscribe(
         response => {
           console.log(response);
           this.queue = response;
@@ -50,7 +52,7 @@ export class QueueComponent implements OnInit {
       );
     }
     if (this.storageService.isDriver()) {
-      this.queueService.getPlaceInQueueFVByDriverId(this.storageService.getUser().id).subscribe(
+      this.queueService.getPlaceInQueueFVByDriver().subscribe(
         response => {
           console.log(response);
           this.driverInQueueFV = !!response;
@@ -59,7 +61,7 @@ export class QueueComponent implements OnInit {
           console.log(error);
         }
       );
-      this.queueService.getPlaceInQueueVFByDriverId(this.storageService.getUser().id).subscribe(
+      this.queueService.getPlaceInQueueVFByDriver().subscribe(
         response => {
           console.log(response);
           this.driverInQueueVF = !!response;
@@ -70,7 +72,7 @@ export class QueueComponent implements OnInit {
       );
     }
     if (this.storageService.isPassenger()) {
-      this.queueService.getPlaceInQueueFVByPassengerId(this.storageService.getUser().id).subscribe(
+      this.queueService.getPlaceInQueueFVByPassenger().subscribe(
         response => {
           console.log(response);
           this.passengerInQueueFV = !!response;
@@ -79,7 +81,7 @@ export class QueueComponent implements OnInit {
           console.log(error);
         }
       );
-      this.queueService.getPlaceInQueueVFByPassengerId(this.storageService.getUser().id).subscribe(
+      this.queueService.getPlaceInQueueVFByPassenger().subscribe(
         response => {
           console.log(response);
           this.passengerInQueueVF = !!response;
@@ -113,17 +115,17 @@ export class QueueComponent implements OnInit {
     return !this.passengerInQueueFV && !this.passengerInQueueVF;
   }
 
-  fio(piq: PlaceInQueue): string {
-    return piq.driver.firstName
-      + (piq.driver.lastName ? (' ' + piq.driver.lastName) : '')
-      + (piq.driver.middleName ? (' ' + piq.driver.middleName) : '');
+  fio(user: User): string {
+    return user.firstName
+      + (user.lastName ? (' ' + user.lastName) : '')
+      + (user.middleName ? (' ' + user.middleName) : '');
   }
 
-  car(piq: PlaceInQueue): string {
-    return piq.driver.car
-      ? ('Автомобиль: ' + ((piq.driver.car.model ? (piq.driver.car.model + ', ') : '')
-        + (piq.driver.car.color ? (piq.driver.car.color + ', ') : '')
-        + (piq.driver.car.regNumber ? (piq.driver.car.regNumber + ', ') : '')).slice(0, -2))
+  car(car: Car): string {
+    return car
+      ? ('Автомобиль: ' + ((car.model ? (car.model + ', ') : '')
+        + (car.color ? (car.color + ', ') : '')
+        + (car.regNumber ? (car.regNumber + ', ') : '')).slice(0, -2))
       : 'Информация об автомобиле отсутствует';
   }
 
@@ -133,6 +135,10 @@ export class QueueComponent implements OnInit {
       : piq.numberPassengers === 4
         ? 'Мест нет'
         : 'Мест: ' + (4 - piq.numberPassengers);
+  }
+
+  numberAnonymous(piq: PlaceInQueue) {
+    return Array(piq.numberPassengers - piq.passengers.length);
   }
 
   showBtnAddDriverInQueue(): boolean {
@@ -145,7 +151,7 @@ export class QueueComponent implements OnInit {
 
   addDriverInQueue() {
     if (this.pageQueueFV()) {
-      this.queueService.addDriverInQueueFV(this.storageService.getUser().id).subscribe(
+      this.queueService.addDriverInQueueFV().subscribe(
         response => {
           console.log(response);
           this.queue = response;
@@ -156,7 +162,7 @@ export class QueueComponent implements OnInit {
         }
       );
     } else {
-      this.queueService.addDriverInQueueVF(this.storageService.getUser().id).subscribe(
+      this.queueService.addDriverInQueueVF().subscribe(
         response => {
           console.log(response);
           this.queue = response;
@@ -171,7 +177,7 @@ export class QueueComponent implements OnInit {
 
   removeDriverFromQueue() {
     if (this.pageQueueFV()) {
-      this.queueService.removeDriverFromQueueFV(this.storageService.getUser().id).subscribe(
+      this.queueService.removeDriverFromQueueFV().subscribe(
         response => {
           console.log(response);
           this.queue = response;
@@ -182,7 +188,7 @@ export class QueueComponent implements OnInit {
         }
       );
     } else {
-      this.queueService.removeDriverFromQueueVF(this.storageService.getUser().id).subscribe(
+      this.queueService.removeDriverFromQueueVF().subscribe(
         response => {
           console.log(response);
           this.queue = response;
@@ -196,9 +202,8 @@ export class QueueComponent implements OnInit {
   }
 
   addPassengerInQueue(piq: PlaceInQueue) {
-    const passengerId = this.storageService.isPassenger() ? this.storageService.getUser().id : null;
     if (this.pageQueueFV()) {
-      this.queueService.addPassengerInQueueFV(piq.id, passengerId).subscribe(
+      this.queueService.addPassengerInQueueFV(piq.id).subscribe(
         response => {
           console.log(response);
           this.queue = response;
@@ -209,7 +214,7 @@ export class QueueComponent implements OnInit {
         }
       );
     } else {
-      this.queueService.addPassengerInQueueVF(piq.id, passengerId).subscribe(
+      this.queueService.addPassengerInQueueVF(piq.id).subscribe(
         response => {
           console.log(response);
           this.queue = response;
@@ -222,10 +227,9 @@ export class QueueComponent implements OnInit {
     }
   }
 
-  removePassengerFromQueue(piq: PlaceInQueue) {
-    const passengerId = this.storageService.isPassenger() ? this.storageService.getUser().id : null;
+  removePassengerFromQueue(passengerId?: number) {
     if (this.pageQueueFV()) {
-      this.queueService.removePassengerFromQueueFV(piq.id, passengerId).subscribe(
+      this.queueService.removePassengerFromQueueFV(passengerId).subscribe(
         response => {
           console.log(response);
           this.queue = response;
@@ -236,7 +240,7 @@ export class QueueComponent implements OnInit {
         }
       );
     } else {
-      this.queueService.removePassengerFromQueueVF(piq.id, passengerId).subscribe(
+      this.queueService.removePassengerFromQueueVF(passengerId).subscribe(
         response => {
           console.log(response);
           this.queue = response;

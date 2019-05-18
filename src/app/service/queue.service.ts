@@ -1,114 +1,82 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/index';
 import { PlaceInQueue } from '../model/place-in-queue';
-import { BASE_URL } from '../config';
+import * as api from '../api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QueueService {
 
-  private queueFVPath = 'queue/f/v';
-
-  private queueVFPath = 'queue/v/f';
-
-  private queueFVDriverPath = 'queue/f/v/driver';
-
-  private queueVFDriverPath = 'queue/v/f/driver';
-
-  private queueFVPassengerPath = 'queue/f/v/passenger';
-
-  private queueVFPassengerPath = 'queue/v/f/passenger';
-
-  private queueFVPiqPassengerPath = 'queue/f/v/$piqId/passenger';
-
-  private queueVFPiqPassengerPath = 'queue/v/f/$piqId/passenger';
-
   constructor(private http: HttpClient) {
   }
 
-  public getAllPlaceInQueueFV(): Observable<Array<PlaceInQueue>> {
-    return this.http.get<Array<PlaceInQueue>>(BASE_URL + this.queueFVPath);
+  public getAllPlaceInQueueFVActive(): Observable<Array<PlaceInQueue>> {
+    return this.http.get<Array<PlaceInQueue>>(api.QUEUE_FV_ALL_ACTIVE_PATH);
   }
 
-  public getAllPlaceInQueueVF(): Observable<Array<PlaceInQueue>> {
-    return this.http.get<Array<PlaceInQueue>>(BASE_URL + this.queueVFPath);
+  public getAllPlaceInQueueVFActive(): Observable<Array<PlaceInQueue>> {
+    return this.http.get<Array<PlaceInQueue>>(api.QUEUE_VF_ALL_ACTIVE_PATH);
   }
 
-  public getPlaceInQueueFVByDriverId(driverId: number): Observable<PlaceInQueue> {
-    const options = {params: new HttpParams().append('driverId', String(driverId))};
-    return this.http.get<PlaceInQueue>(BASE_URL + this.queueFVDriverPath, options);
+  public getPlaceInQueueFVByDriver(): Observable<PlaceInQueue> {
+    return this.http.get<PlaceInQueue>(api.QUEUE_FV_DRIVER_PATH);
   }
 
-  public getPlaceInQueueVFByDriverId(driverId: number): Observable<PlaceInQueue> {
-    const options = {params: new HttpParams().append('driverId', String(driverId))};
-    return this.http.get<PlaceInQueue>(BASE_URL + this.queueVFDriverPath, options);
+  public getPlaceInQueueVFByDriver(): Observable<PlaceInQueue> {
+    return this.http.get<PlaceInQueue>(api.QUEUE_VF_DRIVER_PATH);
   }
 
-  public getPlaceInQueueFVByPassengerId(passengerId: number): Observable<PlaceInQueue> {
-    const options = {params: new HttpParams().append('passengerId', String(passengerId))};
-    return this.http.get<PlaceInQueue>(BASE_URL + this.queueFVPassengerPath, options);
+  public getPlaceInQueueFVByPassenger(): Observable<PlaceInQueue> {
+    return this.http.get<PlaceInQueue>(api.QUEUE_FV_PASSENGER_PATH);
   }
 
-  public getPlaceInQueueVFByPassengerId(passengerId: number): Observable<PlaceInQueue> {
-    const options = {params: new HttpParams().append('passengerId', String(passengerId))};
-    return this.http.get<PlaceInQueue>(BASE_URL + this.queueVFPassengerPath, options);
+  public getPlaceInQueueVFByPassenger(): Observable<PlaceInQueue> {
+    return this.http.get<PlaceInQueue>(api.QUEUE_VF_PASSENGER_PATH);
   }
 
-  public addDriverInQueueFV(driverId: number): Observable<Array<PlaceInQueue>> {
-    const options = {params: new HttpParams().append('driverId', String(driverId))};
-    return this.http.post<Array<PlaceInQueue>>(BASE_URL + this.queueFVDriverPath, null, options);
+  public addDriverInQueueFV(): Observable<Array<PlaceInQueue>> {
+    return this.http.post<Array<PlaceInQueue>>(api.QUEUE_FV_DRIVER_PATH, null);
   }
 
-  public addDriverInQueueVF(driverId: number): Observable<Array<PlaceInQueue>> {
-    const options = {params: new HttpParams().append('driverId', String(driverId))};
-    return this.http.post<Array<PlaceInQueue>>(BASE_URL + this.queueVFDriverPath, null, options);
+  public addDriverInQueueVF(): Observable<Array<PlaceInQueue>> {
+    return this.http.post<Array<PlaceInQueue>>(api.QUEUE_VF_DRIVER_PATH, null);
   }
 
-  public removeDriverFromQueueFV(driverId: number): Observable<Array<PlaceInQueue>> {
-    const options = {params: new HttpParams().append('driverId', String(driverId))};
-    return this.http.delete<Array<PlaceInQueue>>(BASE_URL + this.queueFVDriverPath, options);
+  public removeDriverFromQueueFV(): Observable<Array<PlaceInQueue>> {
+    return this.http.delete<Array<PlaceInQueue>>(api.QUEUE_FV_DRIVER_PATH);
   }
 
-  public removeDriverFromQueueVF(driverId: number): Observable<Array<PlaceInQueue>> {
-    const options = {params: new HttpParams().append('driverId', String(driverId))};
-    return this.http.delete<Array<PlaceInQueue>>(BASE_URL + this.queueVFDriverPath, options);
+  public removeDriverFromQueueVF(): Observable<Array<PlaceInQueue>> {
+    return this.http.delete<Array<PlaceInQueue>>(api.QUEUE_VF_DRIVER_PATH);
   }
 
-  public addPassengerInQueueFV(piqId: number, passengerId?: number): Observable<Array<PlaceInQueue>> {
-    let options = {};
-    if (passengerId) {
-      options = {params: new HttpParams().append('passengerId', String(passengerId))};
+  public addPassengerInQueueFV(piqId: number): Observable<Array<PlaceInQueue>> {
+    if (piqId) {
+      return this.http.post<Array<PlaceInQueue>>(`${api.QUEUE_FV_PASSENGER_PATH}?piqId=${piqId}`, null);
     }
-    return this.http.post<Array<PlaceInQueue>>(BASE_URL
-      + this.queueFVPiqPassengerPath.replace('$piqId', String(piqId)), null, options);
+    return this.http.post<Array<PlaceInQueue>>(`${api.QUEUE_FV_PASSENGER_PATH}`, null);
   }
 
-  public addPassengerInQueueVF(piqId: number, passengerId?: number): Observable<Array<PlaceInQueue>> {
-    let options = {};
-    if (passengerId) {
-      options = {params: new HttpParams().append('passengerId', String(passengerId))};
+  public addPassengerInQueueVF(piqId: number): Observable<Array<PlaceInQueue>> {
+    if (piqId) {
+      return this.http.post<Array<PlaceInQueue>>(`${api.QUEUE_VF_PASSENGER_PATH}?piqId=${piqId}`, null);
     }
-    return this.http.post<Array<PlaceInQueue>>(BASE_URL
-      + this.queueVFPiqPassengerPath.replace('$piqId', String(piqId)), null, options);
+    return this.http.post<Array<PlaceInQueue>>(`${api.QUEUE_VF_PASSENGER_PATH}`, null);
   }
 
-  public removePassengerFromQueueFV(piqId: number, passengerId?: number): Observable<Array<PlaceInQueue>> {
-    let options = {};
+  public removePassengerFromQueueFV(passengerId?: number): Observable<Array<PlaceInQueue>> {
     if (passengerId) {
-      options = {params: new HttpParams().append('passengerId', String(passengerId))};
+      return this.http.delete<Array<PlaceInQueue>>(`${api.QUEUE_FV_PASSENGER_PATH}?passengerId=${passengerId}`);
     }
-    return this.http.delete<Array<PlaceInQueue>>(BASE_URL
-      + this.queueFVPiqPassengerPath.replace('$piqId', String(piqId)), options);
+    return this.http.delete<Array<PlaceInQueue>>(`${api.QUEUE_FV_PASSENGER_PATH}`);
   }
 
-  public removePassengerFromQueueVF(piqId: number, passengerId?: number): Observable<Array<PlaceInQueue>> {
-    let options = {};
+  public removePassengerFromQueueVF(passengerId?: number): Observable<Array<PlaceInQueue>> {
     if (passengerId) {
-      options = {params: new HttpParams().append('passengerId', String(passengerId))};
+      return this.http.delete<Array<PlaceInQueue>>(`${api.QUEUE_VF_PASSENGER_PATH}?passengerId=${passengerId}`);
     }
-    return this.http.delete<Array<PlaceInQueue>>(BASE_URL
-      + this.queueVFPiqPassengerPath.replace('$piqId', String(piqId)), options);
+    return this.http.delete<Array<PlaceInQueue>>(`${api.QUEUE_VF_PASSENGER_PATH}`);
   }
 }

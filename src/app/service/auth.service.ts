@@ -1,30 +1,32 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { AuthLoginInfo } from '../model/login-info';
-import { JwtResponse } from '../model/jwt-response';
+import { TokenResponse } from '../model/token-response';
 import { SignUpInfo } from '../model/signup-info';
-import { BASE_URL } from '../config';
+import * as api from '../api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private signInPath = 'auth/signin';
-
-  private signUpPath = 'auth/signup';
-
   constructor(private http: HttpClient) {
   }
 
-  signIn(credentials: AuthLoginInfo): Observable<JwtResponse> {
-    return this.http.post<JwtResponse>(BASE_URL + this.signInPath, credentials);
+  signIn(username: string, password: string): Observable<TokenResponse> {
+    const headers = new HttpHeaders(
+      {
+        'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+        Authorization: api.AUTHORIZATION
+      }
+    );
+    return this.http.post<TokenResponse>(
+      `${api.TOKEN_PATH}?username=${username}&password=${password}&grant_type=password`, null, {headers}
+    );
   }
 
   signUp(info: SignUpInfo): Observable<string> {
-    console.log(info);
-    return this.http.post<string>(BASE_URL + this.signUpPath, info);
+    return this.http.post<string>(api.SIGNUP_PATH, info);
   }
 }
