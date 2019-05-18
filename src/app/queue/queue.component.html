@@ -32,7 +32,7 @@
     </mat-card-content>
 
     <mat-card-actions *ngIf="storageService.isPassenger()">
-      <button mat-button color="accent" *ngIf="passengerFree(piq)" (click)="addPassengerInQueue(piq)">Сесть</button>
+      <button mat-button color="accent" *ngIf="userFree(piq)" (click)="addPassengerInQueue(piq)">Сесть</button>
       <button mat-button color="accent" *ngIf="passengerInPiq(piq)" (click)="removePassengerFromQueue()">Покинуть</button>
     </mat-card-actions>
 
@@ -61,6 +61,12 @@
 
 <div *ngIf="showBtnRemoveDriverFromQueue()" class="fab-button-right-bottom">
   <button color="primary" mat-fab (click)="removeDriverFromQueue()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div *ngIf="showBtnRemovePassengerFromQueue()" class="fab-button-right-bottom">
+  <button color="primary" mat-fab (click)="removePassengerFromQueue()">
     <mat-icon>close</mat-icon>
   </button>
 </div>

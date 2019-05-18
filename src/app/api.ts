@@ -26,9 +26,13 @@ export const USER_FIO_PATH = `${AUTH_SERVICE}/api/users/fio`;
 
 export const CAR_PATH = `${AUTH_SERVICE}/api/cars`;
 
-export const QUEUE_FV_ALL_ACTIVE_PATH = `${QUEUE_FV_SERVICE}/api/queue`;
+export const QUEUE_FV_ALL_PATH = `${QUEUE_FV_SERVICE}/api/queue`;
 
-export const QUEUE_VF_ALL_ACTIVE_PATH = `${QUEUE_VF_SERVICE}/api/queue`;
+export const QUEUE_VF_ALL_PATH = `${QUEUE_VF_SERVICE}/api/queue`;
+
+export const QUEUE_FV_CURRENT_PATH = `${QUEUE_FV_SERVICE}/api/queue/current`;
+
+export const QUEUE_VF_CURRENT_PATH = `${QUEUE_VF_SERVICE}/api/queue/current`;
 
 export const QUEUE_FV_DRIVER_PATH = `${QUEUE_FV_SERVICE}/api/queue/driver`;
 

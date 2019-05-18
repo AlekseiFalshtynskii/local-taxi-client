@@ -17,13 +17,9 @@ export class QueueComponent implements OnInit {
 
   queue: Array<PlaceInQueue>;
 
-  driverInQueueFV: boolean;
+  userInQueueFV: boolean;
 
-  driverInQueueVF: boolean;
-
-  passengerInQueueFV: boolean;
-
-  passengerInQueueVF: boolean;
+  userInQueueVF: boolean;
 
   userInTrip: boolean;
 
@@ -35,7 +31,7 @@ export class QueueComponent implements OnInit {
 
   ngOnInit() {
     if (this.pageQueueFV()) {
-      this.queueService.getAllPlaceInQueueFVActive().subscribe(
+      this.queueService.getAllPlaceInQueueFV().subscribe(
         response => {
           console.log(response);
           this.queue = response;
@@ -45,7 +41,7 @@ export class QueueComponent implements OnInit {
         }
       );
     } else {
-      this.queueService.getAllPlaceInQueueVFActive().subscribe(
+      this.queueService.getAllPlaceInQueueVF().subscribe(
         response => {
           console.log(response);
           this.queue = response;
@@ -55,46 +51,24 @@ export class QueueComponent implements OnInit {
         }
       );
     }
-    if (this.storageService.isDriver()) {
-      this.queueService.getPlaceInQueueFVByDriver().subscribe(
-        response => {
-          console.log(response);
-          this.driverInQueueFV = !!response;
-        },
-        error => {
-          console.log(error);
-        }
-      );
-      this.queueService.getPlaceInQueueVFByDriver().subscribe(
-        response => {
-          console.log(response);
-          this.driverInQueueVF = !!response;
-        },
-        error => {
-          console.log(error);
-        }
-      );
-    }
-    if (this.storageService.isPassenger()) {
-      this.queueService.getPlaceInQueueFVByPassenger().subscribe(
-        response => {
-          console.log(response);
-          this.passengerInQueueFV = !!response;
-        },
-        error => {
-          console.log(error);
-        }
-      );
-      this.queueService.getPlaceInQueueVFByPassenger().subscribe(
-        response => {
-          console.log(response);
-          this.passengerInQueueVF = !!response;
-        },
-        error => {
-          console.log(error);
-        }
-      );
-    }
+    this.queueService.getCurrentPlaceInQueueFV().subscribe(
+      response => {
+        console.log(response);
+        this.userInQueueFV = !!response;
+      },
+      error => {
+        console.log(error);
+      }
+    );
+    this.queueService.getCurrentPlaceInQueueVF().subscribe(
+      response => {
+        console.log(response);
+        this.userInQueueVF = !!response;
+      },
+      error => {
+        console.log(error);
+      }
+    );
     this.tripService.getTripActive().subscribe(
       response => {
         console.log(response);
@@ -124,8 +98,8 @@ export class QueueComponent implements OnInit {
     });
   }
 
-  passengerFree(): boolean {
-    return !this.passengerInQueueFV && !this.passengerInQueueVF && !this.userInTrip;
+  userFree(): boolean {
+    return !this.userInQueueFV && !this.userInQueueVF && !this.userInTrip;
   }
 
   fio(user: User): string {
@@ -155,11 +129,15 @@ export class QueueComponent implements OnInit {
   }
 
   showBtnAddDriverInQueue(): boolean {
-    return this.storageService.isDriver() && this.queue && !this.driverInQueueFV && !this.driverInQueueVF && !this.userInTrip;
+    return this.storageService.isDriver() && this.queue && this.userFree();
   }
 
   showBtnRemoveDriverFromQueue(): boolean {
-    return this.storageService.isDriver() && (this.pageQueueFV() && this.driverInQueueFV) || (this.pageQueueVF() && this.driverInQueueVF);
+    return this.storageService.isDriver() && ((this.pageQueueFV() && this.userInQueueFV) || (this.pageQueueVF() && this.userInQueueVF));
+  }
+
+  showBtnRemovePassengerFromQueue(): boolean {
+    return this.storageService.isPassenger() && ((this.pageQueueFV() && this.userInQueueFV) || (this.pageQueueVF() && this.userInQueueVF));
   }
 
   addDriverInQueue() {
@@ -168,7 +146,7 @@ export class QueueComponent implements OnInit {
         response => {
           console.log(response);
           this.queue = response;
-          this.driverInQueueFV = true;
+          this.userInQueueFV = true;
         },
         error => {
           console.log(error);
@@ -179,7 +157,7 @@ export class QueueComponent implements OnInit {
         response => {
           console.log(response);
           this.queue = response;
-          this.driverInQueueVF = true;
+          this.userInQueueVF = true;
         },
         error => {
           console.log(error);
@@ -194,7 +172,7 @@ export class QueueComponent implements OnInit {
         response => {
           console.log(response);
           this.queue = response;
-          this.driverInQueueFV = false;
+          this.userInQueueFV = false;
         },
         error => {
           console.log(error);
@@ -205,7 +183,7 @@ export class QueueComponent implements OnInit {
         response => {
           console.log(response);
           this.queue = response;
-          this.driverInQueueVF = false;
+          this.userInQueueVF = false;
         },
         error => {
           console.log(error);
@@ -220,7 +198,7 @@ export class QueueComponent implements OnInit {
         response => {
           console.log(response);
           this.queue = response;
-          this.passengerInQueueFV = true;
+          this.userInQueueFV = true;
         },
         error => {
           console.log(error);
@@ -231,7 +209,7 @@ export class QueueComponent implements OnInit {
         response => {
           console.log(response);
           this.queue = response;
-          this.passengerInQueueVF = true;
+          this.userInQueueVF = true;
         },
         error => {
           console.log(error);
@@ -246,7 +224,7 @@ export class QueueComponent implements OnInit {
         response => {
           console.log(response);
           this.queue = response;
-          this.passengerInQueueFV = false;
+          this.userInQueueFV = false;
         },
         error => {
           console.log(error);
@@ -257,7 +235,7 @@ export class QueueComponent implements OnInit {
         response => {
           console.log(response);
           this.queue = response;
-          this.passengerInQueueVF = false;
+          this.userInQueueVF = false;
         },
         error => {
           console.log(error);

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
 import { Observable, timer } from 'rxjs';
 
 import { TripService } from '../service/trip.service';
@@ -26,7 +25,6 @@ export class TripComponent implements OnInit {
   source: Observable<number>;
 
   constructor(private datePipe: DatePipe,
-              private router: Router,
               private tripService: TripService,
               public storageService: StorageService) {
   }
@@ -44,7 +42,7 @@ export class TripComponent implements OnInit {
     );
     this.tripService.getAllTripFinished().subscribe(
       response => {
-        console.log(response);
+        console.log(response.length);
         this.trips = response;
       },
       error => {

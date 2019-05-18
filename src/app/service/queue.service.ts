@@ -12,28 +12,20 @@ export class QueueService {
   constructor(private http: HttpClient) {
   }
 
-  public getAllPlaceInQueueFVActive(): Observable<Array<PlaceInQueue>> {
-    return this.http.get<Array<PlaceInQueue>>(api.QUEUE_FV_ALL_ACTIVE_PATH);
+  public getAllPlaceInQueueFV(): Observable<Array<PlaceInQueue>> {
+    return this.http.get<Array<PlaceInQueue>>(api.QUEUE_FV_ALL_PATH);
   }
 
-  public getAllPlaceInQueueVFActive(): Observable<Array<PlaceInQueue>> {
-    return this.http.get<Array<PlaceInQueue>>(api.QUEUE_VF_ALL_ACTIVE_PATH);
+  public getAllPlaceInQueueVF(): Observable<Array<PlaceInQueue>> {
+    return this.http.get<Array<PlaceInQueue>>(api.QUEUE_VF_ALL_PATH);
   }
 
-  public getPlaceInQueueFVByDriver(): Observable<PlaceInQueue> {
-    return this.http.get<PlaceInQueue>(api.QUEUE_FV_DRIVER_PATH);
+  public getCurrentPlaceInQueueFV(): Observable<PlaceInQueue> {
+    return this.http.get<PlaceInQueue>(api.QUEUE_FV_CURRENT_PATHQUEUE_FV_CURRENT_PATH);
   }
 
-  public getPlaceInQueueVFByDriver(): Observable<PlaceInQueue> {
-    return this.http.get<PlaceInQueue>(api.QUEUE_VF_DRIVER_PATH);
-  }
-
-  public getPlaceInQueueFVByPassenger(): Observable<PlaceInQueue> {
-    return this.http.get<PlaceInQueue>(api.QUEUE_FV_PASSENGER_PATH);
-  }
-
-  public getPlaceInQueueVFByPassenger(): Observable<PlaceInQueue> {
-    return this.http.get<PlaceInQueue>(api.QUEUE_VF_PASSENGER_PATH);
+  public getCurrentPlaceInQueueVF(): Observable<PlaceInQueue> {
+    return this.http.get<PlaceInQueue>(api.QUEUE_VF_CURRENT_PATH);
   }
 
   public addDriverInQueueFV(): Observable<Array<PlaceInQueue>> {
