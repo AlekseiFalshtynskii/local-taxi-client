@@ -42,6 +42,8 @@ export const QUEUE_FV_PASSENGER_PATH = `${QUEUE_FV_SERVICE}/api/queue/passenger`
 
 export const QUEUE_VF_PASSENGER_PATH = `${QUEUE_VF_SERVICE}/api/queue/passenger`;
 
+export const QUEUE_STATISTIC_PATH = `${QUEUE_FV_SERVICE}/api/queue/statistic`;
+
 export const TRIP_START_PATH = `${TRIP_SERVICE}/api/trips/start`;
 
 export const TRIP_FINISH_PATH = `${TRIP_SERVICE}/api/trips/finish`;
@@ -49,3 +51,5 @@ export const TRIP_FINISH_PATH = `${TRIP_SERVICE}/api/trips/finish`;
 export const TRIP_ACTIVE_PATH = `${TRIP_SERVICE}/api/trips/active`;
 
 export const TRIP_FINISHED_PATH = `${TRIP_SERVICE}/api/trips/finished`;
+
+export const TRIP_STATISTIC_PATH = `${TRIP_SERVICE}/api/trips/statistic`;

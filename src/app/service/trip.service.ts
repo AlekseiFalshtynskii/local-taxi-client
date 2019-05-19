@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/index';
 import { Trip } from '../model/trip';
+import { TripStatistic } from '../model/trip-statistic';
 import * as api from '../api';
 
 @Injectable({
@@ -26,5 +27,9 @@ export class TripService {
 
   public getAllTripFinished(): Observable<Array<Trip>> {
     return this.http.get<Array<Trip>>(api.TRIP_FINISHED_PATH);
+  }
+
+  public getStatistic(): Observable<TripStatistic> {
+    return this.http.get<TripStatistic>(api.TRIP_STATISTIC_PATH);
   }
 }

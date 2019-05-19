@@ -16,6 +16,7 @@ import { LKComponent } from './lk/lk.component';
 import { LoginComponent } from './login/login.component';
 import { QueueComponent } from './queue/queue.component';
 import { RegisterComponent } from './register/register.component';
+import { StatisticComponent } from './statistic/statistic.component';
 import { TripComponent } from './trip/trip.component';
 
 @NgModule({
@@ -25,6 +26,7 @@ import { TripComponent } from './trip/trip.component';
     RegisterComponent,
     LKComponent,
     QueueComponent,
+    StatisticComponent,
     TripComponent
   ],
   imports: [

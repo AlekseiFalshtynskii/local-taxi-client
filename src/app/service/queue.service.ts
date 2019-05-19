@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/index';
 import { PlaceInQueue } from '../model/place-in-queue';
+import { QueueStatistic } from '../model/queue-statistic';
 import * as api from '../api';
 
 @Injectable({
@@ -48,27 +49,31 @@ export class QueueService {
     if (piqId) {
       return this.http.post<Array<PlaceInQueue>>(`${api.QUEUE_FV_PASSENGER_PATH}?piqId=${piqId}`, null);
     }
-    return this.http.post<Array<PlaceInQueue>>(`${api.QUEUE_FV_PASSENGER_PATH}`, null);
+    return this.http.post<Array<PlaceInQueue>>(api.QUEUE_FV_PASSENGER_PATH, null);
   }
 
   public addPassengerInQueueVF(piqId: number): Observable<Array<PlaceInQueue>> {
     if (piqId) {
       return this.http.post<Array<PlaceInQueue>>(`${api.QUEUE_VF_PASSENGER_PATH}?piqId=${piqId}`, null);
     }
-    return this.http.post<Array<PlaceInQueue>>(`${api.QUEUE_VF_PASSENGER_PATH}`, null);
+    return this.http.post<Array<PlaceInQueue>>(api.QUEUE_VF_PASSENGER_PATH, null);
   }
 
   public removePassengerFromQueueFV(passengerId?: number): Observable<Array<PlaceInQueue>> {
     if (passengerId) {
       return this.http.delete<Array<PlaceInQueue>>(`${api.QUEUE_FV_PASSENGER_PATH}?passengerId=${passengerId}`);
     }
-    return this.http.delete<Array<PlaceInQueue>>(`${api.QUEUE_FV_PASSENGER_PATH}`);
+    return this.http.delete<Array<PlaceInQueue>>(api.QUEUE_FV_PASSENGER_PATH);
   }
 
   public removePassengerFromQueueVF(passengerId?: number): Observable<Array<PlaceInQueue>> {
     if (passengerId) {
       return this.http.delete<Array<PlaceInQueue>>(`${api.QUEUE_VF_PASSENGER_PATH}?passengerId=${passengerId}`);
     }
-    return this.http.delete<Array<PlaceInQueue>>(`${api.QUEUE_VF_PASSENGER_PATH}`);
+    return this.http.delete<Array<PlaceInQueue>>(api.QUEUE_VF_PASSENGER_PATH);
+  }
+
+  public getStatistic(): Observable<QueueStatistic> {
+    return this.http.get<QueueStatistic>(api.QUEUE_STATISTIC_PATH);
   }
 }

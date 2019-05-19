@@ -1,0 +1,9 @@
+<div *ngIf="queueStatistic || tripStatistic">
+  <mat-card>
+    <mat-card-content>
+      <div *ngIf="queueStatistic">Среднее время нахождения водителя в очереди: {{time(queueStatistic.waitingDriverInQueue)}}</div>
+      <div *ngIf="queueStatistic">Среднее время ожидания пассажиров: {{time(queueStatistic.waitingPassengers)}}</div>
+      <div *ngIf="tripStatistic">Средняя длительность поездки: {{time(tripStatistic.durationTrip)}}</div>
+    </mat-card-content>
+  </mat-card>
+</div>

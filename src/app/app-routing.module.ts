@@ -5,6 +5,7 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { LKComponent } from './lk/lk.component';
 import { QueueComponent } from './queue/queue.component';
+import { StatisticComponent } from './statistic/statistic.component';
 import { TripComponent } from './trip/trip.component';
 
 const routes: Routes = [
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'trips',
     component: TripComponent
+  },
+  {
+    path: 'statistic',
+    component: StatisticComponent
   },
   {
     path: '',
