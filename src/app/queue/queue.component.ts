@@ -51,33 +51,35 @@ export class QueueComponent implements OnInit {
         }
       );
     }
-    this.queueService.getCurrentPlaceInQueueFV().subscribe(
-      response => {
-        console.log(response);
-        this.userInQueueFV = !!response;
-      },
-      error => {
-        console.log(error);
-      }
-    );
-    this.queueService.getCurrentPlaceInQueueVF().subscribe(
-      response => {
-        console.log(response);
-        this.userInQueueVF = !!response;
-      },
-      error => {
-        console.log(error);
-      }
-    );
-    this.tripService.getTripActive().subscribe(
-      response => {
-        console.log(response);
-        this.userInTrip = !!response;
-      },
-      error => {
-        console.log(error);
-      }
-    );
+    if (this.storageService.getToken()) {
+      this.queueService.getCurrentPlaceInQueueFV().subscribe(
+        response => {
+          console.log(response);
+          this.userInQueueFV = !!response;
+        },
+        error => {
+          console.log(error);
+        }
+      );
+      this.queueService.getCurrentPlaceInQueueVF().subscribe(
+        response => {
+          console.log(response);
+          this.userInQueueVF = !!response;
+        },
+        error => {
+          console.log(error);
+        }
+      );
+      this.tripService.getTripActive().subscribe(
+        response => {
+          console.log(response);
+          this.userInTrip = !!response;
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    }
   }
 
   pageQueueFV() {
