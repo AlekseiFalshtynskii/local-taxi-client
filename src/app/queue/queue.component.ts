@@ -105,6 +105,9 @@ export class QueueComponent implements OnInit {
   }
 
   fio(user: User): string {
+    if (user.id === this.storageService.getUser().id) {
+      return 'Вы';
+    }
     return user.firstName
       + (user.lastName ? (' ' + user.lastName) : '')
       + (user.middleName ? (' ' + user.middleName) : '');
