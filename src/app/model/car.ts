@@ -3,4 +3,5 @@ export class Car {
   model: string;
   regNumber: string;
   color: string;
+  version: number;
 }

@@ -88,9 +88,7 @@ export class LKComponent implements OnInit {
   }
 
   passwordFormDisable() {
-    for (let field in this.passwordForm.controls) {
-      this.passwordForm.get(field).reset();
-    }
+    this.passwordForm.reset();
     this.passwordForm.disable();
   }
 
@@ -131,7 +129,7 @@ export class LKComponent implements OnInit {
     this.userService.savePassword(this.passwordForm.get('oldPassword').value, this.passwordForm.get('newPassword').value).subscribe(
       response => {
         console.log(response);
-        this.passwordForm.disable();
+        this.passwordFormDisable();
       },
       error => {
         console.log(error);
@@ -180,7 +178,9 @@ export class LKComponent implements OnInit {
     this.carService.saveCar(car).subscribe(
       response => {
         console.log(response);
-        this.user.car = response;
+        this.user.car.model = car.model;
+        this.user.car.regNumber = car.regNumber;
+        this.user.car.color = car.color;
         this.storageService.saveUser(this.user);
         this.carForm.disable();
       },
